@@ -13,3 +13,7 @@
 2. Access docker container shell: `docker exec -it my-p2p sh`
 3. Install package: `pipenv install <package-name>` *Note use --dev for dev packages
 4. Copy Pipfile and Pipfile.lock to local directory: `docker cp my-p2p:/app/Pipfile . && docker cp my-p2p:/app/Pipfile.lock .`
+
+### Linting
+`docker exec -it my-p2p pipenv run pylint app`
+- Add lint pre-commit hook using symlink: `ln -s pre-commit.sh .git/hooks/pre-commit`

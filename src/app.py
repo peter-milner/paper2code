@@ -1,3 +1,4 @@
+'''Quick Start Application'''
 import os
 
 from flask import Flask
@@ -6,8 +7,9 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
+    '''Serves hello world'''
     target = os.environ.get('TARGET', 'World')
-    return 'Hellohehe {}!\n'.format(target)
+    return 'Hello {}!\n'.format(target)
 
 if __name__ == "__main__":
-    app.run(debug=True,host='0.0.0.0',port=int(os.environ.get('PORT', 8080)))
+    app.run(debug=True,host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
