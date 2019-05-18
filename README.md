@@ -8,13 +8,15 @@
 ### Building and testing using Google Cloud
 - Build: `gcloud builds submit --tag gcr.io/[PROJECT-ID]/[IMAGE]`
 - Local testing: 
-```PORT=8080 && docker run -p 8080:${PORT} \
+```
+PORT=8080 && docker run -p 8080:${PORT} \
 --name my-p2p \
 -e PORT=${PORT} \
 -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/keys/p2p.json \
 -v $GOOGLE_APPLICATION_CREDENTIALS:/tmp/keys/p2p.json:ro \
 -v </path/to/src>:/app \
-gcr.io/[PROJECT-ID]/[IMAGE]```
+gcr.io/[PROJECT-ID]/[IMAGE]
+```
 
 ### Add package
 1. Have container up and running

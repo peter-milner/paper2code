@@ -1,0 +1,14 @@
+<html>
+    <body>
+        <div>
+            <p>Please upload an image:</p>
+            <form method=post enctype=multipart/form-data>
+                <input type=file name=file><br/>
+                <input type=submit value=Upload>
+            </form>
+        </div>
+        {% if result is defined %}
+            <p>The picture translates to {{result}}</p>
+        {% endif %}
+    </body>
+</html>
