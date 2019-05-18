@@ -16,4 +16,4 @@
 
 ### Linting
 `docker exec -it my-p2p pipenv run pylint app`
-- Add lint pre-commit hook using symlink: `ln -s pre-commit.sh .git/hooks/pre-commit`
+- Add lint pre-commit hook: `cp pre-commit.sh .git/hooks/pre-commit`. Can also use a symlink here.
