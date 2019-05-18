@@ -1,5 +1,8 @@
 # paper2code
 
+*Warning
+Use at your own risk. paper2code uses [Restricted Python](https://restrictedpython.readthedocs.io/en/latest/index.html) to define a subset of Python that is allowed to be executed. However, there could still be potential vulnerabilities.
+
 ### Prep
 1. Obtain Google Application Key and download to a local path
 2. Rename file to `p2p.json`

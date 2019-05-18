@@ -3,6 +3,7 @@ import os
 
 from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
+from RestrictedPython import compile_restricted, safe_builtins
 
 ALLOWED_EXTENSIONS = set(['jpg', 'gif', 'tiff', 'svg', 'ps'])
 
@@ -20,8 +21,20 @@ def index():
         filename = secure_filename(file.filename)
         if allowed_file(filename):
             processed = detect_document_uri(file.read())
-            return render_template('base.html', result=processed)
+            output = None
+            run('output = 2+2', output)
+            return render_template('base.html', result=output)
     return render_template('base.html')
+
+def run(code, output):
+    '''Safely compile and run user uploaded code'''
+    byte_code = compile_restricted(
+        code,
+        filename='<inline code>',
+        mode='exec'
+    )
+    # pylint: disable=W0122
+    exec(byte_code, {'__builtins__': safe_builtins}, output)
 
 def allowed_file(filename):
     '''Verify that the filename is allowed'''

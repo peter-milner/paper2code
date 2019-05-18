@@ -10,6 +10,7 @@ pylint = "*"
 flask = "*"
 gunicorn = "*"
 google-cloud-vision = "*"
+restrictedpython = "*"
 
 [requires]
 python_version = "3.7"
