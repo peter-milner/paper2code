@@ -1,4 +1,2 @@
 # Python specific
 __pycache__/
-# Only check in Pipfile. requirements.txt used only for Google Cloud.
-requirements.txt
