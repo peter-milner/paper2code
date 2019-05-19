@@ -3,7 +3,9 @@ import os
 
 from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
-from RestrictedPython import compile_restricted, safe_builtins
+from RestrictedPython import compile_restricted_exec, safe_globals
+from RestrictedPython.Eval import default_guarded_getiter
+from RestrictedPython.Guards import guarded_iter_unpack_sequence
 
 ALLOWED_EXTENSIONS = set(['jpg', 'gif', 'tiff', 'svg', 'ps'])
 
@@ -20,21 +22,20 @@ def index():
         file = request.files['file']
         filename = secure_filename(file.filename)
         if allowed_file(filename):
-            processed = detect_document_uri(file.read())
-            output = None
-            run('output = 2+2', output)
-            return render_template('base.html', result=output)
+            user_input = detect_document_uri(file.read())
+            output = {}
+            run(user_input, output)
+            return render_template('base.html', input=user_input, result=output['out'])
     return render_template('base.html')
 
 def run(code, output):
     '''Safely compile and run user uploaded code'''
-    byte_code = compile_restricted(
-        code,
-        filename='<inline code>',
-        mode='exec'
-    )
+    glb = safe_globals.copy()
+    glb['_getiter_'] = default_guarded_getiter
+    glb['_iter_unpack_sequence_'] = guarded_iter_unpack_sequence
+    byte_code = compile_restricted_exec(code)
     # pylint: disable=W0122
-    exec(byte_code, {'__builtins__': safe_builtins}, output)
+    exec(byte_code.code, glb, output)
 
 def allowed_file(filename):
     '''Verify that the filename is allowed'''

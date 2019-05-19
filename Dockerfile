@@ -14,4 +14,4 @@ COPY . .
 
 ENV FLASK_ENV=development
 ENV FLASK_DEBUG=1
-CMD pipenv run gunicorn --reload --bind :$PORT --workers 1 --threads 1 --log-level=debug app:app
+CMD pipenv run gunicorn --reload --bind :$PORT --timeout 180 --workers 1 --threads 1 --log-level=debug app:app
