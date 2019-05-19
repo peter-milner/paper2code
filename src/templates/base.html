@@ -17,7 +17,11 @@
         {% if result is defined %}
         <div id="output">
             Input:
-            <div class="code">{{input|safe}}</div>
+            <div class="code">
+                {% for in in input.splitlines() %}
+                    <span>{{in}}</span><br/>
+                {% endfor %}
+            </div>
             Output:
             <div class="code">{{result}}</div>
         </div>

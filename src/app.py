@@ -25,7 +25,6 @@ def index():
             user_input = detect_document_uri(file.read())
             output = {}
             run(user_input, output)
-            user_input = user_input.replace('\n', '<br />')
             return render_template('base.html', input=user_input, result=output['out'])
     return render_template('base.html')
 
