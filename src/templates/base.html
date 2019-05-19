@@ -1,15 +1,26 @@
 <html>
+    <head>
+        <title>Turn Paper Into Code</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/skeleton.css') }}">
+    </head>
     <body>
-        <div>
-            <p>Please upload an image:</p>
+        <div id="input">
+            <p>Please upload an image with code:</p>
             <form method=post enctype=multipart/form-data>
-                <input type=file name=file><br/>
+                <input type=file name=file>
                 <input type=submit value=Upload>
             </form>
+            <p>Note: Use variable "out" for printing in the output.</p>
         </div>
         {% if result is defined %}
-            <p>You entered: {{input}}</p>
-            <p>The output is: {{result}}</p>
+        <div id="output">
+            Input:
+            <div class="code">{{input|safe}}</div>
+            Output:
+            <div class="code">{{result}}</div>
+        </div>
         {% endif %}
     </body>
 </html>

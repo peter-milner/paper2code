@@ -1,0 +1,10 @@
+body {
+    text-align: center;
+}
+#input {
+    margin-bottom: 5rem;
+}
+.code {
+    padding: 2rem;
+    background-color: lightgray;
+}

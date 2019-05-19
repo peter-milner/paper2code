@@ -4,7 +4,7 @@ import os
 from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
 from RestrictedPython import compile_restricted_exec, safe_globals
-from RestrictedPython.Eval import default_guarded_getiter
+from RestrictedPython.Eval import default_guarded_getiter, default_guarded_getitem
 from RestrictedPython.Guards import guarded_iter_unpack_sequence
 
 ALLOWED_EXTENSIONS = set(['jpg', 'gif', 'tiff', 'svg', 'ps'])
@@ -25,6 +25,7 @@ def index():
             user_input = detect_document_uri(file.read())
             output = {}
             run(user_input, output)
+            user_input = user_input.replace('\n', '<br />')
             return render_template('base.html', input=user_input, result=output['out'])
     return render_template('base.html')
 
@@ -32,10 +33,16 @@ def run(code, output):
     '''Safely compile and run user uploaded code'''
     glb = safe_globals.copy()
     glb['_getiter_'] = default_guarded_getiter
+    glb['_getitem_'] = default_guarded_getitem
     glb['_iter_unpack_sequence_'] = guarded_iter_unpack_sequence
-    byte_code = compile_restricted_exec(code)
-    # pylint: disable=W0122
-    exec(byte_code.code, glb, output)
+
+    try:
+        byte_code = compile_restricted_exec(code)
+        # pylint: disable=W0122
+        exec(byte_code.code, glb, output)
+    # pylint: disable=W0703
+    except Exception:
+        output['out'] = 'Something went wrong. Please inspect the code you entered.'
 
 def allowed_file(filename):
     '''Verify that the filename is allowed'''
@@ -52,22 +59,3 @@ def detect_document_uri(img):
 
     response = client.document_text_detection(image=image)
     return response.full_text_annotation.text
-
-    # for page in response.full_text_annotation.pages:
-        # for block in page.blocks:
-        #     print('\nBlock confidence: {}\n'.format(block.confidence))
-
-        #     for paragraph in block.paragraphs:
-        #         print('Paragraph confidence: {}'.format(
-        #             paragraph.confidence))
-
-        #         for word in paragraph.words:
-        #             word_text = ''.join([
-        #                 symbol.text for symbol in word.symbols
-        #             ])
-        #             print('Word text: {} (confidence: {})'.format(
-        #                 word_text, word.confidence))
-
-        #             for symbol in word.symbols:
-        #                 print('\tSymbol: {} (confidence: {})'.format(
-        #                     symbol.text, symbol.confidence))

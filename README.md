@@ -31,3 +31,7 @@ gcr.io/[PROJECT-ID]/[IMAGE]
 ### Linting
 `docker exec -it my-p2p pipenv run pylint app`
 - Add lint pre-commit hook: `cp pre-commit.sh .git/hooks/pre-commit`. Can also use a symlink here.
+
+### Deployment
+1. Ensure you are using `Dockerfile.prod`
+2. Deploy: `gcloud builds submit --tag gcr.io/[PROJECT-ID]/[IMAGE]`
