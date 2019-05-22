@@ -8,7 +8,7 @@ Use at your own risk. paper2code uses [Restricted Python](https://restrictedpyth
 2. Rename file to `p2p.json`
 2. Export path with keys (needs to be done every shell session, consider adding to `~/.bashrc`): `export GOOGLE_APPLICATION_CREDENTIALS="path/to/p2p.json"`
 
-### Building and testing using Google Cloud
+### Building and testing using Google Cloud Run
 - Build: `gcloud builds submit --tag gcr.io/[PROJECT-ID]/[IMAGE]`
 - Local testing: 
 ```
@@ -32,7 +32,7 @@ gcr.io/[PROJECT-ID]/[IMAGE]
 `docker exec -it my-p2p pipenv run pylint app`
 - Add lint pre-commit hook: `cp pre-commit.sh .git/hooks/pre-commit`. Can also use a symlink here
 
-### Deployment
+### Deployment to Google Cloud Run
 1. Ensure you are using `Dockerfile.prod`
 2. Generate requirements.txt using pipenv (need to do this within local container): `pipenv lock -r > requirements.txt`
 2. Deploy: `gcloud builds submit --tag gcr.io/[PROJECT-ID]/[IMAGE]`
