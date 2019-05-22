@@ -1,12 +1,20 @@
 <html>
     <head>
         <title>Turn Paper Into Code</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/skeleton.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+        <script>
+            window.onload = function(){
+                document.getElementById("in-code").addEventListener("click", function() {
+                    document.getElementById("edit-code").style.display = "block";
+                    document.getElementById("in-code").style.display = "none";
+                })
+            };
+        </script>
     </head>
     <body>
-        <div id="input">
+        <div id="upload">
             <p>Please upload an image with code:</p>
             <form method=post enctype=multipart/form-data>
                 <input type=file name=file>
@@ -15,13 +23,21 @@
             <p>Note: Use variable "out" for printing in the output.</p>
         </div>
         {% if result is defined %}
-        <div id="output">
-            Input:
-            <div class="code">
+        <div id="input">
+            Input (click box to edit):
+            <div id="in-code" class="code">
                 {% for in in input.splitlines() %}
                     <span>{{in}}</span><br/>
                 {% endfor %}
             </div>
+            <div id="edit-code">
+                <form method=post>
+                    <textarea name="code">{% for in in input.splitlines() %}{{in}}&#10;{% endfor %}</textarea><br/>
+                    <input type=submit value=Edit>
+                </form>
+            </div>
+        </div>
+        <div id="output">
             Output:
             <div class="code">{{result}}</div>
         </div>

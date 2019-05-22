@@ -19,11 +19,16 @@ if __name__ == "__main__":
 def index():
     '''Serves homepage'''
     if request.method == 'POST':
-        file = request.files['file']
-        filename = secure_filename(file.filename)
-        if allowed_file(filename):
-            user_input = detect_document_uri(file.read())
-            output = {}
+        output = {}
+        if 'file' in request.files:
+            file = request.files['file']
+            filename = secure_filename(file.filename)
+            if allowed_file(filename):
+                user_input = detect_document_uri(file.read())
+                run(user_input, output)
+                return render_template('base.html', input=user_input, result=output['out'])
+        else:
+            user_input = request.form['code']
             run(user_input, output)
             return render_template('base.html', input=user_input, result=output['out'])
     return render_template('base.html')
